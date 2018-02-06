@@ -16,7 +16,9 @@ Send-WefflesEmail -mode alert -emailTo admin@example.com -emailFrom alerts@examp
 # Notes
 If you don't want to pass email and csv path info each time the defaults can be changed in the params section of the script.
 Example:
+
 param (
+    
     [ValidateSet('summary','alert')]
     [string]$mode = 'summary',
     [string]$emailTo = 'admin@example.com',

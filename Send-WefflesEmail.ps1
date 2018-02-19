@@ -84,7 +84,7 @@ foreach ($eventId in $urgentEventIds){
     foreach ($group in $groupedEvents) {
         if ($group.Name -eq $eventId) {
             $emailMessage = "Event ID " + $eventId.ToString() + " detected by weffles " + $group.Count.ToString() +" times between " + $startDate.ToShortDateString() + " and " + $endDate.ToShortDateString() + ".  This ID is defined as urgent and needs immediate attention."                    
-            $emailMessage += "`nCount   Date        Host"
+            $emailMessage += "`nCount   Date            Host"
             foreach ($instance in $group.Group) { 
                 "Urgent! Date: " +$instance.EventDate.ToShortDateString() + " Host: " + $instance.EventHost + "  Event: " + $instance.EventID
             }
@@ -92,7 +92,7 @@ foreach ($eventId in $urgentEventIds){
             
             foreach ($summaryitem in $summary.group) {              
                 $summaryItemCount = $events | where-object {$_.EventDate -eq $summaryitem.EventDate -and $_.EventID -eq $summaryitem.EventID -and $_.EventHost -eq $summaryitem.EventHost} | measure
-                $emailMessage += "`n" + $summaryItemCount.Count + " " +$summaryitem.EventDate.ToString("MM/dd/yyyy") + " " + $summaryitem.EventHost
+                $emailMessage += "`n" + $summaryItemCount.Count + "    " +$summaryitem.EventDate.ToString("MM/dd/yyyy") + "   " + $summaryitem.EventHost
             }
 
             SendEmail -subject "Weffles Alarm" -body $emailMessage            

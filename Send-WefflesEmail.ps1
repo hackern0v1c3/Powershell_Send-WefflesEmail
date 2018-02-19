@@ -83,10 +83,12 @@ $groupedEvents = $events | Group-Object EventID
 foreach ($eventId in $urgentEventIds){
     foreach ($group in $groupedEvents) {
         if ($group.Name -eq $eventId) {
-            SendEmail -subject "Weffles Alarm" -body ("Event ID " + $eventId.ToString() + " detected by weffles " + $group.Count.ToString() +" between " + $startDate.ToShortDateString() + " and " + $endDate.ToShortDateString() + ".  This ID is defined as urgent and needs immediate attention.")          
-            foreach ($instance in $group.Group) {               
+            $emailMessage = "Event ID " + $eventId.ToString() + " detected by weffles " + $group.Count.ToString() +" times between " + $startDate.ToShortDateString() + " and " + $endDate.ToShortDateString() + ".  This ID is defined as urgent and needs immediate attention."                    
+            foreach ($instance in $group.Group) { 
+                $emailMessage += "`nDate: " +$instance.EventDate.ToShortDateString() + " Host: " + $instance.EventHost       
                 "Urgent! Date: " +$instance.EventDate.ToShortDateString() + " Host: " + $instance.EventHost + "  Event: " + $instance.EventID
             }
+            SendEmail -subject "Weffles Alarm" -body $emailMessage
         }
     }
 }
